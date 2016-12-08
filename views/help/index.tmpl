@@ -1,1 +1,29 @@
-Help Index Page
+<div class="qor-page__body">
+  <div>
+    <select>
+      <option>category filter</option>
+    </select>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable qor-search">
+      <label class="mdl-button mdl-js-button mdl-button--icon qor-search__label" for="inputSearch">
+        <i class="material-icons">search</i>
+      </label>
+      <div>
+        <input class="mdl-textfield__input qor-search__input" type="text" id="inputSearch" name="keyword" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
+        <label class="mdl-textfield__label"></label>
+      </div>
+    </div>
+  </div>
+
+  {{with .Result}}
+    <div>
+      {{range $help := .HelpResults}}
+        {{$help.Title}}
+      {{end}}
+    </div>
+
+    <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .HelpResource}}" data-url="{{new_resource_path .HelpResource}}">
+      <i class="material-icons">add</i>
+    </a>
+  {{end}}
+</div>
