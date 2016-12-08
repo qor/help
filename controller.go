@@ -7,4 +7,5 @@ type controller struct {
 }
 
 func (controller) Index(context *admin.Context) {
+	context.Execute("help/index", map[string]interface{}{})
 }

@@ -1,4 +1,4 @@
-{{$help_url := join_url "%v/%v" .Admin.GetRouter.Prefix "!help"}}
+{{$help_url := (join_url .Admin.GetRouter.Prefix "!help")}}
 <label class="mdl-button mdl-js-button mdl-button--icon qor-notifications__badges" data-url="{{$help_url}}" data-open-type="slideout">
-  <i class="material-icons">notifications</i>
+  <i class="material-icons">help</i>
 </label>
