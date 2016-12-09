@@ -23,6 +23,8 @@ func (QorHelpEntry) ToParam() string {
 func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 	if res, ok := res.(*admin.Resource); ok {
 		res.UseTheme("help")
+		res.ShowAttrs("Body")
+
 		Admin := res.GetAdmin()
 		Admin.RegisterViewPath("github.com/qor/help/views")
 		Admin.RegisterResourceRouters(res, "create", "update", "read", "delete")
