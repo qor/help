@@ -18,6 +18,8 @@
     var EVENT_DISABLE = 'disable.' + NAMESPACE;
     var EVENT_CLICK = 'click.' + NAMESPACE;
     var EVENT_KEYUP = 'keyup.' + NAMESPACE;
+    var EVENT_CHANGE = 'change.' + NAMESPACE;
+
 
     function QorHelpDocument(element, options) {
         this.$element = $(element);
@@ -37,6 +39,7 @@
                 .on(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc)
                 .on(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .on(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
+                .on(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
                 .on(EVENT_CLICK, '.qor-doc__close', this.closeDoc);
         },
 
@@ -45,6 +48,7 @@
                 .off(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc)
                 .off(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .off(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
+                .off(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
                 .off(EVENT_CLICK, '.qor-doc__close', this.closeDoc);
         },
 
@@ -64,7 +68,7 @@
                 $list = $('.qor-help__lists'),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
                 url = [
-                    $(this).data().helpFilterUrl,
+                    $input.data().helpFilterUrl,
                     '?',
                     $category.prop('name'),
                     '=',
@@ -101,17 +105,21 @@
             var $element = $(e.target),
                 $lis = $('.qor-help__lists li'),
                 $li = $element.closest('li'),
+                $tags = $('.qor-help__lists-tags'),
                 $preview = $li.find('.qor-doc__preview'),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
                 url = $element.data().inlineUrl;
 
 
             $lis.not($li).hide();
+            $element.hide();
+            $tags.hide();
 
             if ($preview.size()) {
                 if ($preview.is(':visible')) {
                     $preview.hide();
                     $lis.show();
+                    $tags.show();
                 } else {
                     $preview.show();
                 }
@@ -142,9 +150,11 @@
 
         closeDoc: function() {
             var $lis = $('.qor-help__lists li'),
-                $preview = $('.qor-doc__preview');
+                $preview = $('.qor-doc__preview'),
+                $tags = $('.qor-help__lists-tags');
 
-            $lis.show();
+            $lis.show().find('>a').show();
+            $tags.show();
             $preview.hide();
         },
 

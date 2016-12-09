@@ -35,6 +35,10 @@
             {{range $result := .Result}}
             <li>
                 <a href="{{url_for $result $resource}}" data-inline-url="{{url_for $result $resource}}">{{$result.Title}}</a>
+                <span class="qor-help__lists-tags">
+                  <span>category1</span>
+                <span>category2</span>
+                </span>
             </li>
             {{end}}
         </ul>
