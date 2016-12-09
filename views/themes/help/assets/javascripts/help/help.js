@@ -72,7 +72,7 @@
                     '?',
                     $category.prop('name'),
                     '=',
-                    $category.find('option:selected').text(),
+                    $category.val(),
                     '&',
                     $input.prop('name'),
                     '=',

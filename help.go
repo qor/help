@@ -23,6 +23,11 @@ func (QorHelpEntry) ToParam() string {
 func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 	if res, ok := res.(*admin.Resource); ok {
 		res.UseTheme("help")
+
+		if res.GetMeta("Body") == nil {
+			res.Meta(&admin.Meta{Name: "Body", Type: "rich_editor"})
+		}
+
 		res.ShowAttrs("Body")
 
 		Admin := res.GetAdmin()

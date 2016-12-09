@@ -1,53 +1,53 @@
 {{$resource := .Resource}} {{$actions := load_actions "index" }} {{if $actions}}
 <div class="qor-page__header">
-    {{$actions}}
+  {{$actions}}
 </div>
 {{end}}
 
 <div class="qor-page__body">
-    <div data-toggle="qor.help">
-
-        <div class="qor-help__header clearfix">
-            <div class="qor-field">
-                <div class="mdl-textfield mdl-js-textfield">
-                    <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
-                          <option value="1">category1</option>
-                          <option value="2">category2</option>
-                          <option value="3">category3</option>
-                        </select>
-                </div>
-            </div>
-
-            <div class="qor-field">
-                <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t " qor_admin.actions.search_bar_search " "Search "}}">
-                    <label class="mdl-textfield__label" for="inputSearch"></label>
-                </div>
-            </div>
-            <div class="qor-field">
-                <button class="mdl-button mdl-button--colored qor-help__search-button" type="button">{{t " qor_admin.actions.search_bar_search " "Search "}}</button>
-            </div>
+  <div data-toggle="qor.help">
+    <div class="qor-help__header clearfix">
+      <div class="qor-field">
+        <div class="mdl-textfield mdl-js-textfield">
+          <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
+            <option value="1">category1</option>
+            <option value="2">category2</option>
+            <option value="3">category3</option>
+          </select>
         </div>
+      </div>
 
-        {{render "shared/flashes"}} {{render "shared/errors"}}
-
-        <ul class="qor-help__lists">
-            {{range $result := .Result}}
-            <li>
-                <a href="{{url_for $result $resource}}" data-inline-url="{{url_for $result $resource}}">{{$result.Title}}</a>
-                <span class="qor-help__lists-tags">
-                  <span>category1</span>
-                <span>category2</span>
-                </span>
-            </li>
-            {{end}}
-        </ul>
-
-        {{if has_create_permission .Resource}}
-        <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .Resource}}" data-url="{{new_resource_path .Resource}}">
-            <i class="material-icons">add</i>
-        </a>
-        {{end}} {{render "index/pagination"}}
-
+      <div class="qor-field">
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t " qor_admin.actions.search_bar_search " "Search "}}">
+          <label class="mdl-textfield__label" for="inputSearch"></label>
+        </div>
+      </div>
+      <div class="qor-field">
+        <button class="mdl-button mdl-button--colored qor-help__search-button" type="button">{{t " qor_admin.actions.search_bar_search " "Search "}}</button>
+      </div>
     </div>
+
+    {{render "shared/flashes"}} {{render "shared/errors"}}
+
+    <ul class="qor-help__lists">
+      {{range $result := .Result}}
+        <li>
+          <a href="{{url_for $result $resource}}" data-inline-url="{{url_for $result $resource}}">{{$result.Title}}</a>
+          <span class="qor-help__lists-tags">
+            <span>category1</span>
+            <span>category2</span>
+          </span>
+        </li>
+      {{end}}
+    </ul>
+
+    {{render "index/pagination"}}
+
+    {{if has_create_permission .Resource}}
+      <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .Resource}}" data-url="{{new_resource_path .Resource}}" data-open-type="slideout">
+        <i class="material-icons">add</i>
+      </a>
+    {{end}}
+  </div>
 </div>
