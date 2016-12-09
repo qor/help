@@ -7,24 +7,25 @@
 <div class="qor-page__body">
     <div data-toggle="qor.help">
 
-        <div class="qor-help__header">
-            <div class="qor-form-section-rows qor-section-columns-2 clearfix">
-                <div class="qor-field">
-                    <div class="mdl-textfield mdl-js-textfield">
-                        <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
+        <div class="qor-help__header clearfix">
+            <div class="qor-field">
+                <div class="mdl-textfield mdl-js-textfield">
+                    <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
                           <option value="1">category1</option>
                           <option value="2">category2</option>
                           <option value="3">category3</option>
                         </select>
-                    </div>
                 </div>
+            </div>
 
-                <div class="qor-field">
-                    <div class="mdl-textfield mdl-js-textfield">
-                        <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t " qor_admin.actions.search_bar_search " "Search "}}">
-                        <label class="mdl-textfield__label" for="inputSearch"></label>
-                    </div>
+            <div class="qor-field">
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t " qor_admin.actions.search_bar_search " "Search "}}">
+                    <label class="mdl-textfield__label" for="inputSearch"></label>
                 </div>
+            </div>
+            <div class="qor-field">
+                <button class="mdl-button mdl-button--colored qor-help__search-button" type="button">{{t " qor_admin.actions.search_bar_search " "Search "}}</button>
             </div>
         </div>
 
