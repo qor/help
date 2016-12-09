@@ -1,21 +1,43 @@
 {{$resource := .Resource}}
 <div class="qor-page__body">
-  <div data-help-filter-url="/admin/!help">
-    <select name="category">
-      <option>category filter</option>
-    </select>
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable qor-search">
-      <label class="mdl-button mdl-js-button mdl-button--icon qor-search__label" for="inputSearch">
-        <i class="material-icons">search</i>
-      </label>
-      <div>
-        <input class="mdl-textfield__input qor-search__input" type="text" id="inputSearch" name="keyword" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
-        <label class="mdl-textfield__label"></label>
-      </div>
-    </div>
+  <label class="qor-field__label qor-form-section-title">
+      Filter
+  </label>
+  <div class="qor-fieldset">
+      <div data-help-filter-url="/admin/!help">
+        <div class="qor-form-section-rows qor-section-columns-2 clearfix">
+          
+          <div class="qor-field">
+            <select name="category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
+              <option value="1">category1</option>
+              <option value="2">category2</option>
+              <option value="3">category3</option>
+            </select>
+          </div>
+
+          <div class="qor-field">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable qor-search">
+              <label class="mdl-button mdl-js-button mdl-button--icon qor-search__label" for="inputSearch">
+                <i class="material-icons">search</i>
+              </label>
+              <div>
+                <input class="mdl-textfield__input qor-search__input" type="text" id="inputSearch" name="keyword" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
+                <label class="mdl-textfield__label"></label>
+              </div>
+            </div>
+          </div>        
+      
+      </div>  
+
+    </div>  
   </div>
 
+
+
+  <label class="qor-field__label qor-form-section-title">
+      Lists
+  </label>
   {{with .Result}}
     <div>
       {{range $help := .HelpResults}}
