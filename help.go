@@ -42,5 +42,10 @@ func (help *Help) ConfigureQorResource(res resource.Resourcer) {
 			PermissionMode: roles.Read,
 			Resource:       res,
 		})
+
+		router.Get("!help/new", helpController.New, admin.RouteConfig{
+			PermissionMode: roles.Create,
+			Resource:       help.Config.Resource,
+		})
 	}
 }

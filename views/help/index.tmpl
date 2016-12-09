@@ -20,9 +20,11 @@
       {{range $help := .HelpResults}}
         {{$help.Title}}
       {{end}}
+
+      <a href="/admin/users/1" data-url="/admin/users/1" data-open-type="slideout">User 1</a>
     </div>
 
-    <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .HelpResource}}" data-url="{{new_resource_path .HelpResource}}">
+    <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="/admin/!help/new" data-url="/admin/!help/new">
       <i class="material-icons">add</i>
     </a>
   {{end}}

@@ -15,3 +15,7 @@ func (ctr controller) Index(context *admin.Context) {
 		"HelpResource": helpResource,
 	})
 }
+
+func (ctr controller) New(context *admin.Context) {
+	context.Execute("help/new", context.Resource.NewStruct())
+}
