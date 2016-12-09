@@ -1,44 +1,48 @@
-{{$resource := .Resource}}
-{{$actions := load_actions "index" }}
-{{if $actions}}
-  <div class="qor-page__header">
+{{$resource := .Resource}} {{$actions := load_actions "index" }} {{if $actions}}
+<div class="qor-page__header">
     {{$actions}}
-  </div>
+</div>
 {{end}}
 
 <div class="qor-page__body">
-  <div data-help-filter-url="{{url_for $resource}}">
-    <select name="category">
-      <option>category filter</option>
-    </select>
+    <div data-toggle="qor.help">
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable qor-search">
-      <label class="mdl-button mdl-js-button mdl-button--icon qor-search__label" for="inputSearch">
-        <i class="material-icons">search</i>
-      </label>
-      <div>
-        <input class="mdl-textfield__input qor-search__input" type="text" id="inputSearch" name="keyword" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
-        <label class="mdl-textfield__label"></label>
-      </div>
+        <div data-help-filter-url="{{url_for $resource}}" class="qor-help__header">
+            <div class="qor-form-section-rows qor-section-columns-2 clearfix">
+                <div class="qor-field">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <select name="category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
+                          <option value="1">category1</option>
+                          <option value="2">category2</option>
+                          <option value="3">category3</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="qor-field">
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input qor-search__input" type="text" id="inputSearch" name="keyword" value="" placeholder="{{t " qor_admin.actions.search_bar_search " "Search "}}">
+                        <label class="mdl-textfield__label" for="inputSearch"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{render "shared/flashes"}} {{render "shared/errors"}}
+
+        <ul class="qor-help__lists">
+            {{range $result := .Result}}
+            <li>
+                <a href="{{url_for $result $resource}}" data-inline-url="{{url_for $result $resource}}">{{$result.Title}}</a>
+            </li>
+            {{end}}
+        </ul>
+
+        {{if has_create_permission .Resource}}
+        <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .Resource}}" data-url="{{new_resource_path .Resource}}">
+            <i class="material-icons">add</i>
+        </a>
+        {{end}} {{render "index/pagination"}}
+
     </div>
-  </div>
-
-  {{render "shared/flashes"}}
-  {{render "shared/errors"}}
-
-  <div class="qor-table-container">
-    {{range $result := .Result}}
-      <a href="{{url_for $result $resource}}" data-open-type="slideout">
-        {{$result.Title}}
-      </a>
-    {{end}}
-  </div>
-
-  {{if has_create_permission .Resource}}
-    <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .Resource}}" data-url="{{new_resource_path .Resource}}">
-      <i class="material-icons">add</i>
-    </a>
-  {{end}}
-
-  {{render "index/pagination"}}
 </div>
