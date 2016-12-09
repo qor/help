@@ -4,7 +4,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/qor/admin"
 	"github.com/qor/qor/resource"
-	"github.com/qor/roles"
 )
 
 type QorHelpEntry struct {
@@ -23,20 +22,9 @@ func (QorHelpEntry) ToParam() string {
 
 func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 	if res, ok := res.(*admin.Resource); ok {
+		res.UseTheme("help")
 		Admin := res.GetAdmin()
-		router := Admin.GetRouter()
-
 		Admin.RegisterViewPath("github.com/qor/help/views")
-
-		helpController := controller{}
-		router.Get("!help", helpController.Index, admin.RouteConfig{
-			PermissionMode: roles.Read,
-			Resource:       res,
-		})
-
-		router.Get("!help/new", helpController.New, admin.RouteConfig{
-			PermissionMode: roles.Create,
-			Resource:       res,
-		})
+		Admin.RegisterResourceRouters(res, "create", "update", "read", "delete")
 	}
 }

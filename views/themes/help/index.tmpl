@@ -1,0 +1,44 @@
+{{$resource := .Resource}}
+{{$actions := load_actions "index" }}
+{{if $actions}}
+  <div class="qor-page__header">
+    {{$actions}}
+  </div>
+{{end}}
+
+<div class="qor-page__body">
+  <div data-help-filter-url="{{url_for $resource}}">
+    <select name="category">
+      <option>category filter</option>
+    </select>
+
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable qor-search">
+      <label class="mdl-button mdl-js-button mdl-button--icon qor-search__label" for="inputSearch">
+        <i class="material-icons">search</i>
+      </label>
+      <div>
+        <input class="mdl-textfield__input qor-search__input" type="text" id="inputSearch" name="keyword" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
+        <label class="mdl-textfield__label"></label>
+      </div>
+    </div>
+  </div>
+
+  {{render "shared/flashes"}}
+  {{render "shared/errors"}}
+
+  <div class="qor-table-container">
+    {{range $result := .Result}}
+      <a href="{{url_for $result $resource}}" data-open-type="slideout">
+        {{$result.Title}}
+      </a>
+    {{end}}
+  </div>
+
+  {{if has_create_permission .Resource}}
+    <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .Resource}}" data-url="{{new_resource_path .Resource}}">
+      <i class="material-icons">add</i>
+    </a>
+  {{end}}
+
+  {{render "index/pagination"}}
+</div>
