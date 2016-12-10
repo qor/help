@@ -11,7 +11,10 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/qor"
 	"github.com/qor/qor/resource"
+	"github.com/qor/qor/utils"
 )
+
+var Global = "global"
 
 type QorHelpEntry struct {
 	gorm.Model
@@ -85,7 +88,16 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 			res.Meta(&admin.Meta{
 				Name: "Categories",
 				Valuer: func(record interface{}, context *qor.Context) interface{} {
-					if field, ok := context.GetDB().NewScope(record).FieldByName("Categories"); ok {
+					tx := context.GetDB()
+					if tx.NewRecord(record) {
+						if category := context.Request.URL.Query().Get("category"); category != "" {
+							return []string{category}
+						} else {
+							return []string{Global}
+						}
+					}
+
+					if field, ok := tx.NewScope(record).FieldByName("Categories"); ok {
 						if categories, ok := field.Field.Interface().(Categories); ok {
 							return categories.Categories
 						}
@@ -93,7 +105,7 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 					return []string{}
 				},
 				Config: &admin.SelectManyConfig{Collection: func(record interface{}, context *qor.Context) [][]string {
-					var results = [][]string{{"dashboard", string(Admin.T(context, "qor_help.categories.dashboard", "Dashboard"))}}
+					var results = [][]string{{Global, string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", Global), utils.HumanizeString(Global)))}}
 					for _, r := range Admin.GetResources() {
 						results = append(results, []string{r.ToParam(), string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))})
 					}
