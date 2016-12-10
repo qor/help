@@ -1,7 +1,10 @@
-{{$resource := .Resource}} {{$actions := load_actions "index" }} {{if $actions}}
-<div class="qor-page__header">
-  {{$actions}}
-</div>
+{{$current_category := (get_current_help_category nil .)}}
+{{$resource := .Resource}}
+{{$actions := load_actions "index" }}
+{{if $actions}}
+  <div class="qor-page__header">
+    {{$actions}}
+  </div>
 {{end}}
 
 <div class="qor-page__body">
@@ -19,16 +22,17 @@
 
       <div class="qor-field">
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t " qor_admin.actions.search_bar_search " "Search "}}">
+          <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
           <label class="mdl-textfield__label" for="inputSearch"></label>
         </div>
       </div>
       <div class="qor-field">
-        <button class="mdl-button mdl-button--colored qor-help__search-button" type="button">{{t " qor_admin.actions.search_bar_search " "Search "}}</button>
+        <button class="mdl-button mdl-button--colored qor-help__search-button" type="button">{{t "qor_admin.actions.search_bar_search" "Search"}}</button>
       </div>
     </div>
 
-    {{render "shared/flashes"}} {{render "shared/errors"}}
+    {{render "shared/flashes"}}
+    {{render "shared/errors"}}
 
     <ul class="qor-help__lists">
       {{range $result := .Result}}
@@ -46,7 +50,7 @@
     {{render "index/pagination"}}
 
     {{if has_create_permission .Resource}}
-      <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{new_resource_path .Resource}}" data-url="{{new_resource_path .Resource}}" data-open-type="slideout">
+      <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{patch_url (new_resource_path .Resource) "category" $current_category}}" data-url="{{patch_url (new_resource_path .Resource) "category" $current_category}}" data-open-type="slideout">
         <i class="material-icons">add</i>
       </a>
     {{end}}

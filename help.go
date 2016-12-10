@@ -110,12 +110,25 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 						results = append(results, []string{r.ToParam(), string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))})
 					}
 					return results
-				}}})
+				}},
+			})
 		}
 
 		res.ShowAttrs("Body")
 
 		Admin.RegisterViewPath("github.com/qor/help/views")
 		Admin.RegisterResourceRouters(res, "create", "update", "read", "delete")
+
+		Admin.RegisterFuncMap("get_current_help_category", func(r *admin.Resource, context *admin.Context) string {
+			if r != nil {
+				return r.ToParam()
+			}
+
+			if category := context.Request.URL.Query().Get("category"); category != "" {
+				return category
+			}
+
+			return Global
+		})
 	}
 }
