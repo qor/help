@@ -15,6 +15,7 @@
       <div class="qor-field">
         <div class="mdl-textfield mdl-js-textfield">
           <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" placeholder="category filter">
+            <option value="">{{t "qor_helo.category.all" "All"}}</option>
             {{range $category := (get_help_categories .)}}
               <option value="{{index $category 0}}" {{if (eq $current_category (index $category 0))}}SELECTED{{end}}>{{index $category 1}}</option>
             {{end}}

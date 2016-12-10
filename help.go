@@ -11,10 +11,9 @@ import (
 	"github.com/qor/admin"
 	"github.com/qor/qor"
 	"github.com/qor/qor/resource"
-	"github.com/qor/qor/utils"
 )
 
-var Global = "global"
+var Global = "dashboard"
 
 type QorHelpEntry struct {
 	gorm.Model
@@ -92,8 +91,6 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 					if tx.NewRecord(record) {
 						if category := context.Request.URL.Query().Get("category"); category != "" {
 							return []string{category}
-						} else {
-							return []string{Global}
 						}
 					}
 
@@ -105,7 +102,7 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 					return []string{}
 				},
 				Config: &admin.SelectManyConfig{Collection: func(record interface{}, context *qor.Context) [][]string {
-					var results = [][]string{{Global, string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", Global), utils.HumanizeString(Global)))}}
+					var results [][]string
 					for _, r := range Admin.GetResources() {
 						results = append(results, []string{r.ToParam(), string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))})
 					}
@@ -130,7 +127,7 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 		Admin.RegisterResourceRouters(res, "create", "update", "read", "delete")
 
 		Admin.RegisterFuncMap("get_help_categories", func(context *admin.Context) [][]string {
-			var results = [][]string{{Global, string(Admin.T(context.Context, fmt.Sprintf("qor_help.categories.%v", Global), utils.HumanizeString(Global)))}}
+			var results [][]string
 			for _, r := range Admin.GetResources() {
 				results = append(results, []string{r.ToParam(), string(Admin.T(context.Context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))})
 			}
@@ -146,7 +143,7 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 				return category
 			}
 
-			return Global
+			return ""
 		})
 	}
 }
