@@ -119,6 +119,14 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 		Admin.RegisterViewPath("github.com/qor/help/views")
 		Admin.RegisterResourceRouters(res, "create", "update", "read", "delete")
 
+		Admin.RegisterFuncMap("get_help_categories", func(context *admin.Context) [][]string {
+			var results = [][]string{{Global, string(Admin.T(context.Context, fmt.Sprintf("qor_help.categories.%v", Global), utils.HumanizeString(Global)))}}
+			for _, r := range Admin.GetResources() {
+				results = append(results, []string{r.ToParam(), string(Admin.T(context.Context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))})
+			}
+			return results
+		})
+
 		Admin.RegisterFuncMap("get_current_help_category", func(r *admin.Resource, context *admin.Context) string {
 			if r != nil {
 				return r.ToParam()
