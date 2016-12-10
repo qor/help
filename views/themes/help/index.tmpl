@@ -1,6 +1,8 @@
 {{$current_category := (get_current_help_category nil .)}}
 {{$resource := .Resource}}
 {{$actions := load_actions "index" }}
+{{$keyword := .Context.Request.URL.Query.Get "keyword"}}
+
 {{if $actions}}
   <div class="qor-page__header">
     {{$actions}}
@@ -12,7 +14,7 @@
     <div class="qor-help__header clearfix">
       <div class="qor-field">
         <div class="mdl-textfield mdl-js-textfield">
-          <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" chooser-selected="true" placeholder="category filter">
+          <select name="category" class="qor-help__search-category" data-toggle="qor.chooser" placeholder="category filter">
             {{range $category := (get_help_categories .)}}
               <option value="{{index $category 0}}" {{if (eq $current_category (index $category 0))}}SELECTED{{end}}>{{index $category 1}}</option>
             {{end}}
@@ -22,7 +24,7 @@
 
       <div class="qor-field">
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
+          <input class="mdl-textfield__input qor-help__search" type="text" id="inputSearch" name="keyword" data-help-filter-url="{{url_for $resource}}" value="{{$keyword}}" placeholder="{{t "qor_admin.actions.search_bar_search" "Search"}}">
           <label class="mdl-textfield__label" for="inputSearch"></label>
         </div>
       </div>

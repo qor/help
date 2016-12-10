@@ -114,6 +114,16 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 			})
 		}
 
+		res.IndexAttrs() // generate search attrs
+		searchHandler := res.SearchHandler
+		res.SearchHandler = func(keyword string, context *qor.Context) *gorm.DB {
+			tx := searchHandler(keyword, context)
+			if category := context.Request.URL.Query().Get("category"); category != "" {
+				return tx.Where("categories LIKE ?", "%"+fmt.Sprintf("[%v]", category)+"%")
+			}
+			return tx
+		}
+
 		res.ShowAttrs("Body")
 
 		Admin.RegisterViewPath("github.com/qor/help/views")
