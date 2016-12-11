@@ -145,5 +145,13 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 
 			return ""
 		})
+
+		Admin.RegisterFuncMap("get_help_documents_count", func(r *admin.Resource, context *admin.Context) uint {
+			var result uint
+			if r != nil {
+				context.GetDB().Model(res.NewStruct()).Where("categories LIKE ?", "%"+fmt.Sprintf("[%v]", r.ToParam())+"%").Count(&result)
+			}
+			return result
+		})
 	}
 }

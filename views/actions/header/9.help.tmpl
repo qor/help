@@ -1,4 +1,6 @@
 {{$help_url := (patch_url (join_url .Admin.GetRouter.Prefix "!help") "category" (get_current_help_category .Resource .))}}
+{{$help_documents_count := (get_help_documents_count .Resource .)}}
 <label class="mdl-button mdl-js-button mdl-button--icon qor-notifications__badges" data-url="{{$help_url}}" data-open-type="slideout">
+  {{if $help_documents_count}}<span class="qor-icon__unread_count">{{$help_documents_count}}</span>{{end}}
   <i class="material-icons">help</i>
 </label>
