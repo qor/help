@@ -65,7 +65,7 @@
         searchAction: function() {
             var $category = $('.qor-help__search-category'),
                 $input = $('.qor-help__search'),
-                $list = $('.qor-help__lists'),
+                $list = $('.qor-help__body'),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
                 url = [
                     $input.data().helpFilterUrl,
@@ -90,7 +90,7 @@
                 },
 
                 success: function(html) {
-                    $list.html($(html).find('.qor-help__lists').html()).show();
+                    $list.html($(html).find('.qor-help__body').html()).show();
                     $loading.remove();
                 },
                 error: function(xhr, textStatus, errorThrown) {
