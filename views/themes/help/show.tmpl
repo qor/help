@@ -10,15 +10,14 @@
   {{render "shared/errors"}}
 
   <div class="qor-form-container qor-help__show">
+    <h5>{{raw .Result.Title}}</h5>
+    <div>{{raw .Result.Body}}</div>
+
     {{if has_update_permission .Resource}}
       <a href="{{join_url (url_for .Result .Resource) "edit"}}" class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--edit" data-open-type="slideout" data-url="{{join_url (url_for .Result .Resource) "edit"}}">
         <i class="material-icons">edit</i>
       </a>
     {{end}}
-
-     <h5>{{raw .Result.Title}}</h5>
-
-    <div>{{raw .Result.Body}}</div>
   </div>
 </div>
 

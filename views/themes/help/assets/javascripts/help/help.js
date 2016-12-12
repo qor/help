@@ -40,7 +40,6 @@
                 .on(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .on(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
                 .on(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
-                .on(EVENT_CLICK, '.qor-doc__close', this.closeDoc);
         },
 
         unbind: function() {
@@ -49,7 +48,6 @@
                 .off(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .off(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
                 .off(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
-                .off(EVENT_CLICK, '.qor-doc__close', this.closeDoc);
         },
 
         searchKeyup: function(e) {
@@ -102,29 +100,14 @@
         },
 
         loadDoc: function(e) {
-            var $element = $(e.target),
-                $lis = $('.qor-help__lists li'),
-                $li = $element.closest('li'),
-                $tags = $('.qor-help__lists-tags'),
-                $preview = $li.find('.qor-doc__preview'),
+            var $this = this,
+                $element = $(e.target),
+                $index = $(".qor-help__index"),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
+                $help_body = $('.qor-help__body'),
                 url = $element.data().inlineUrl;
 
-
-            $lis.not($li).hide();
-            $element.hide();
-            $tags.hide();
-
-            if ($preview.size()) {
-                if ($preview.is(':visible')) {
-                    $preview.hide();
-                    $lis.show();
-                    $tags.show();
-                } else {
-                    $preview.show();
-                }
-                return false;
-            }
+            $index.hide();
 
             $.ajax(url, {
                 method: 'GET',
@@ -132,11 +115,17 @@
                 processData: false,
                 contentType: false,
                 beforeSend: function() {
-                    $li.append($loading);
+                    $help_body.append($loading);
                     window.componentHandler.upgradeElement($loading.children()[0]);
                 },
                 success: function(html) {
-                    $(html).find('.qor-form-container').appendTo($li).addClass('qor-fieldset qor-doc__preview').prepend(QorHelpDocument.TEMPLATE_PREVIEW_CLOSE);
+                    $(html).find('.qor-page__show').appendTo($help_body).addClass('qor-doc__preview');
+                    $(QorHelpDocument.TEMPLATE_PREVIEW_CLOSE).prependTo($(".qor-slideout__title"));
+                    $(".qor-slideout__title .qor-doc__close").click(function() {
+                        $index.show();
+                        $('.qor-doc__preview').hide();
+                        $(".qor-slideout__title .qor-doc__close").remove();
+                    });
                     $loading.remove();
                 },
                 error: function(xhr, textStatus, errorThrown) {
@@ -148,16 +137,6 @@
             return false;
         },
 
-        closeDoc: function() {
-            var $lis = $('.qor-help__lists li'),
-                $preview = $('.qor-doc__preview'),
-                $tags = $('.qor-help__lists-tags');
-
-            $lis.show().find('>a').show();
-            $tags.show();
-            $preview.hide();
-        },
-
         destroy: function() {
             this.unbind();
             this.$element.removeData(NAMESPACE);
@@ -165,7 +144,7 @@
     };
 
     QorHelpDocument.TEMPLATE_LOADING = '<div style="text-align: center; margin-top: 30px;"><div class="mdl-spinner mdl-js-spinner is-active qor-layout__bottomsheet-spinner"></div></div>';
-    QorHelpDocument.TEMPLATE_PREVIEW_CLOSE = '<a href="javascript://" class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-doc__close"><i class="material-icons">close</i></a>';
+    QorHelpDocument.TEMPLATE_PREVIEW_CLOSE = '<a href="javascript://" class="qor-doc__close"><i class="material-icons">keyboard_backspace</i></a>';
 
     QorHelpDocument.plugin = function(options) {
         return this.each(function() {
