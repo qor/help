@@ -88,6 +88,7 @@
                 },
 
                 success: function(html) {
+                    $(".qor-slideout__title .qor-doc__close").remove();
                     $list.html($(html).find('.qor-help__body').html()).show();
                     $loading.remove();
                 },
