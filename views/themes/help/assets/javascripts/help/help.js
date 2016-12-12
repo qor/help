@@ -39,7 +39,7 @@
                 .on(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc)
                 .on(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .on(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
-                .on(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
+                .on(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this));
         },
 
         unbind: function() {
@@ -47,7 +47,7 @@
                 .off(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc)
                 .off(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .off(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
-                .off(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
+                .off(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this));
         },
 
         searchKeyup: function(e) {
@@ -88,7 +88,8 @@
                 },
 
                 success: function(html) {
-                    $(".qor-slideout__title .qor-doc__close").remove();
+                    $(".qor-slideout__title").show();
+                    $(".qor-slideout__show_title").remove();
                     $list.html($(html).find('.qor-help__body').html()).show();
                     $loading.remove();
                 },
@@ -101,8 +102,7 @@
         },
 
         loadDoc: function(e) {
-            var $this = this,
-                $element = $(e.target),
+            var $element = $(e.target),
                 $index = $(".qor-help__index"),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
                 $help_body = $('.qor-help__body'),
@@ -121,11 +121,19 @@
                 },
                 success: function(html) {
                     $(html).find('.qor-page__show').appendTo($help_body).addClass('qor-doc__preview');
-                    $(QorHelpDocument.TEMPLATE_PREVIEW_CLOSE).prependTo($(".qor-slideout__title"));
+
+                    // update slideout title
+                    $(".qor-slideout__show_title").remove();
+                    $(".qor-slideout__title").hide();
+                    var $newtitle = $("<h3 class='qor-slideout__title qor-slideout__show_title'></h3>");
+                    $newtitle.text($(".qor-doc__preview .qor-help__document_title").hide().text());
+                    $newtitle.prepend($(QorHelpDocument.TEMPLATE_PREVIEW_CLOSE)).appendTo($(".qor-slideout__header"));
+
                     $(".qor-slideout__title .qor-doc__close").click(function() {
                         $index.show();
-                        $('.qor-doc__preview').hide();
-                        $(".qor-slideout__title .qor-doc__close").remove();
+                        $(".qor-slideout__title").show();
+                        $('.qor-doc__preview').remove();
+                        $(".qor-slideout__show_title").remove();
                     });
                     $loading.remove();
                 },

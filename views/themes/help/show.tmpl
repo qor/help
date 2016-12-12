@@ -10,7 +10,7 @@
   {{render "shared/errors"}}
 
   <div class="qor-form-container qor-help__show">
-    <h5>{{raw .Result.Title}}</h5>
+    <h5 class="qor-help__document_title">{{raw .Result.Title}}</h5>
     <div>{{raw .Result.Body}}</div>
 
     {{if has_update_permission .Resource}}
