@@ -55,8 +55,12 @@
         {{render "index/pagination"}}
       {{else}}
         <h2 class="qor-page__tips">
-          {{t "qor_help.no_document_for" "No document for {{$1}}" (t (print "qor_help.categories." $current_category))}}<br>
-          <a href="#" data-url="{{url_for $resource}}" data-open-type="slideout">{{t "qor_help.check_all_documents" "Check All Documents"}}</a>
+          {{if $current_category}}
+            {{t "qor_help.no_document_for" "No document for {{$1}}" (t (print "qor_help.categories." $current_category))}}<br>
+            <a href="#" data-url="{{url_for $resource}}" data-open-type="slideout">{{t "qor_help.check_all_documents" "Check All Documents"}}</a>
+          {{else}}
+            {{t "qor_help.no_document" "No document"}}<br>
+          {{end}}
         </h2>
       {{end}}
 
