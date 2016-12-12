@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/jinzhu/gorm"
+	"github.com/jinzhu/inflection"
 	"github.com/qor/admin"
 	"github.com/qor/qor"
 	"github.com/qor/qor/resource"
@@ -76,6 +77,8 @@ func (QorHelpEntry) ToParam() string {
 
 func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 	if res, ok := res.(*admin.Resource); ok {
+		inflection.AddUncountable("Help")
+
 		Admin := res.GetAdmin()
 		res.UseTheme("help")
 
