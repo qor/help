@@ -102,10 +102,29 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 					return []string{}
 				},
 				Config: &admin.SelectManyConfig{Collection: func(record interface{}, context *qor.Context) [][]string {
-					var results [][]string
+					var (
+						results    [][]string
+						resultsMap = map[string][]string{}
+					)
+
 					for _, r := range Admin.GetResources() {
-						results = append(results, []string{r.ToParam(), string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))})
+						value := string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))
+						resultsMap[value] = append(resultsMap[value], r.ToParam())
 					}
+
+					var translations []string
+					for key, _ := range resultsMap {
+						translations = append(translations, key)
+					}
+
+					sort.Strings(translations)
+
+					for _, key := range translations {
+						for _, param := range resultsMap[key] {
+							results = append(results, []string{param, key})
+						}
+					}
+
 					return results
 				}},
 			})
