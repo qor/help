@@ -57,16 +57,22 @@
         pagination: function(e) {
             var $ele = $(e.target),
                 url = $ele.prop('href'),
-                $list;
+                $loading = $(QorHelpDocument.TEMPLATE_LOADING),
+                $list = this.$element.find(CLASS_LISTS);
 
             $.ajax(url, {
                 method: 'GET',
                 dataType: 'html',
+                beforeSend: function() {
+                    $list.hide();
+                    $loading.prependTo($list);
+                    window.componentHandler.upgradeElement($loading.children()[0]);
+                },
                 success: function(html) {
-                    $list = $(html).find(CLASS_LISTS);
-                    $(CLASS_LISTS).html($list);
+                    $list.show().html($(html).find(CLASS_LISTS));
                 },
                 error: function(response) {
+                    $loading.remove();
                     window.alert(response.responseText);
                 }
             });
