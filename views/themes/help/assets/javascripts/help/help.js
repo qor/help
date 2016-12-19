@@ -137,6 +137,8 @@
                 $index = $(".qor-help__index"),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
                 $help_body = $('.qor-help__body'),
+                docTitle,
+                data = {},
                 url = $element.data().inlineUrl;
 
             $index.hide();
@@ -154,17 +156,21 @@
                     $(html).find('.qor-page__show').appendTo($help_body).addClass('qor-doc__preview');
 
                     // update slideout title
-                    $(".qor-slideout__show_title").remove();
-                    $(".qor-slideout__title").hide();
-                    var $newtitle = $("<h3 class='qor-slideout__title qor-slideout__show_title'></h3>");
-                    $newtitle.text($(".qor-doc__preview .qor-help__document_title").hide().text());
-                    $newtitle.prepend($(QorHelpDocument.TEMPLATE_PREVIEW_CLOSE)).appendTo($(".qor-slideout__header"));
+                    $('.qor-slideout__show_title').remove();
+                    $('.qor-slideout__title').hide();
 
-                    $(".qor-slideout__title .qor-doc__close").click(function() {
+                    data.title = $('.qor-doc__preview .qor-help__document_title').text();
+                    data.url = url;
+
+                    docTitle = window.Mustache.render(QorHelpDocument.TEMPLATE_DOC_TITLE, data);
+                    $('.qor-doc__preview .qor-help__document_title').hide();
+                    $('.qor-slideout__header').append(docTitle);
+
+                    $('.qor-slideout__title .qor-doc__close').click(function() {
                         $index.show();
-                        $(".qor-slideout__title").show();
+                        $('.qor-slideout__title').show();
                         $('.qor-doc__preview').remove();
-                        $(".qor-slideout__show_title").remove();
+                        $('.qor-slideout__show_title').remove();
                     });
                     $loading.remove();
                 },
@@ -184,7 +190,14 @@
     };
 
     QorHelpDocument.TEMPLATE_LOADING = '<div style="text-align: center; margin-top: 30px;"><div class="mdl-spinner mdl-js-spinner is-active qor-layout__bottomsheet-spinner"></div></div>';
-    QorHelpDocument.TEMPLATE_PREVIEW_CLOSE = '<a href="javascript://" class="qor-doc__close"><i class="material-icons">keyboard_backspace</i></a>';
+    QorHelpDocument.TEMPLATE_PREVIEW_CLOSE = '';
+    QorHelpDocument.TEMPLATE_DOC_TITLE = (
+        '<h3 class="qor-slideout__title qor-slideout__show_title">' +
+        '<a href="javascript://" class="qor-doc__close"><i class="material-icons">keyboard_backspace</i></a>' +
+        '<span>[[title]]</span>' +
+        '<a href="[[url]]" target="_blank"><i class="material-icons">open_in_new</i></a>' +
+        '</h3>'
+    );
 
     QorHelpDocument.plugin = function(options) {
         return this.each(function() {
