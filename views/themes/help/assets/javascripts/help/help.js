@@ -19,6 +19,7 @@
     var EVENT_CLICK = 'click.' + NAMESPACE;
     var EVENT_KEYUP = 'keyup.' + NAMESPACE;
     var EVENT_CHANGE = 'change.' + NAMESPACE;
+    var CLASS_LISTS = '.qor-help__index';
 
 
     function QorHelpDocument(element, options) {
@@ -39,7 +40,9 @@
                 .on(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc)
                 .on(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .on(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
-                .on(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this));
+                .on(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
+                .on(EVENT_CLICK, '.qor-pagination a', this.pagination.bind(this));
+
         },
 
         unbind: function() {
@@ -47,7 +50,28 @@
                 .off(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc)
                 .off(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
                 .off(EVENT_CLICK, '.qor-help__search-button', this.search.bind(this))
-                .off(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this));
+                .off(EVENT_CHANGE, '.qor-help__search-category', this.search.bind(this))
+                .off(EVENT_CLICK, '.qor-pagination a', this.pagination.bind(this));
+        },
+
+        pagination: function(e) {
+            var $ele = $(e.target),
+                url = $ele.prop('href'),
+                $list;
+
+            $.ajax(url, {
+                method: 'GET',
+                dataType: 'html',
+                success: function(html) {
+                    $list = $(html).find(CLASS_LISTS);
+                    $(CLASS_LISTS).html($list);
+                },
+                error: function(response) {
+                    window.alert(response.responseText);
+                }
+            });
+
+            return false;
         },
 
         searchKeyup: function(e) {
@@ -59,6 +83,7 @@
         search: function() {
             this.searchAction();
         },
+
 
         searchAction: function() {
             var $category = $('.qor-help__search-category'),

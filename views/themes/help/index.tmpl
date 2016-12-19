@@ -65,11 +65,12 @@
         </h2>
       {{end}}
 
-      {{if has_create_permission .Resource}}
-        <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{patch_url (new_resource_path .Resource) "category" $current_category}}" data-url="{{patch_url (new_resource_path .Resource) "category" $current_category}}" data-open-type="slideout">
-          <i class="material-icons">add</i>
-        </a>
-      {{end}}
     </div>
+    {{if has_create_permission .Resource}}
+      <a class="mdl-button mdl-button--fab mdl-button--primary mdl-js-button mdl-js-ripple-effect qor-button--new" href="{{patch_url (new_resource_path .Resource) "category" $current_category}}" data-url="{{patch_url (new_resource_path .Resource) "category" $current_category}}" data-open-type="slideout">
+        <i class="material-icons">add</i>
+      </a>
+    {{end}}
+    
   </div>
 </div>

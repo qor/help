@@ -88,3 +88,15 @@
         }
     }
 }
+
+.qor-help__body {
+    .qor-pagination-container {
+        margin: 24px 0;
+        .qor-pagination {
+            margin-left: 0;
+        }
+        .qor-actions {
+            display: none;
+        }
+    }
+}
