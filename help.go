@@ -155,7 +155,11 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 
 		Admin.RegisterFuncMap("get_current_help_category", func(r *admin.Resource, context *admin.Context) string {
 			if r != nil {
-				return r.ToParam()
+				for _, o := range Admin.GetResources() {
+					if o.ToParam() == r.ToParam() {
+						return r.ToParam()
+					}
+				}
 			}
 
 			if category := context.Request.URL.Query().Get("category"); category != "" {
