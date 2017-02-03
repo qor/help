@@ -145,6 +145,15 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 		Admin.RegisterViewPath("github.com/qor/help/views")
 		Admin.RegisterResourceRouters(res, "create", "update", "read", "delete")
 
+		Admin.RegisterFuncMap("get_help_category_name", func(param string, context *admin.Context) string {
+			for _, r := range Admin.GetResources() {
+				if r.ToParam() == param {
+					return string(Admin.T(context.Context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))
+				}
+			}
+			return param
+		})
+
 		Admin.RegisterFuncMap("get_help_categories", func(context *admin.Context) [][]string {
 			var results [][]string
 			for _, r := range Admin.GetResources() {
