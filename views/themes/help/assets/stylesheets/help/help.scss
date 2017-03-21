@@ -34,6 +34,10 @@
 
 .qor-help__show {
     border: 0;
+    padding: 16px 24px;
+    margin-bottom: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
     h5 {
         margin-top: 0;
         margin-bottom: 24px;
@@ -41,7 +45,10 @@
 }
 
 .qor-help__lists {
-    padding-left: 0;
+    padding: 16px 24px;
+    margin-bottom: 16px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
     .qor-help__lists-tags {
         margin-left: 8px;
         span {
@@ -121,5 +128,14 @@
         .qor-actions {
             display: none;
         }
+    }
+}
+
+.qor-slideout{
+    .qor-help__lists {
+        padding: 0;
+        margin-bottom: 0;
+        background-color: transparent;
+        box-shadow: none;
     }
 }

@@ -1,4 +1,4 @@
-(function (factory) {
+(function(factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as anonymous module.
         define(['jquery'], factory);
@@ -9,7 +9,7 @@
         // Browser globals.
         factory(jQuery);
     }
-})(function ($) {
+})(function($) {
 
     'use strict';
 
@@ -31,13 +31,13 @@
     QorHelpDocument.prototype = {
         constructor: QorHelpDocument,
 
-        init: function () {
+        init: function() {
             this.bind();
             this.$newLink = $('.qor-slideout .qor-slideout__opennew');
             this.$newLinkHref = this.$newLink.attr('href');
         },
 
-        bind: function () {
+        bind: function() {
             this.$element
                 .on(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc.bind(this))
                 .on(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
@@ -47,7 +47,7 @@
 
         },
 
-        unbind: function () {
+        unbind: function() {
             this.$element
                 .off(EVENT_CLICK, '.qor-help__lists [data-inline-url]', this.loadDoc.bind(this))
                 .off(EVENT_KEYUP, '.qor-help__search', this.searchKeyup.bind(this))
@@ -56,7 +56,7 @@
                 .off(EVENT_CLICK, '.qor-pagination a', this.pagination.bind(this));
         },
 
-        pagination: function (e) {
+        pagination: function(e) {
             var $ele = $(e.target),
                 url = $ele.prop('href'),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
@@ -65,15 +65,15 @@
             $.ajax(url, {
                 method: 'GET',
                 dataType: 'html',
-                beforeSend: function () {
+                beforeSend: function() {
                     $list.hide();
                     $loading.prependTo($list);
                     window.componentHandler.upgradeElement($loading.children()[0]);
                 },
-                success: function (html) {
+                success: function(html) {
                     $list.show().html($(html).find(CLASS_LISTS));
                 },
-                error: function (response) {
+                error: function(response) {
                     $loading.remove();
                     window.alert(response.responseText);
                 }
@@ -82,18 +82,18 @@
             return false;
         },
 
-        searchKeyup: function (e) {
+        searchKeyup: function(e) {
             if (e.keyCode == 13) {
                 this.searchAction();
             }
         },
 
-        search: function () {
+        search: function() {
             this.searchAction();
         },
 
 
-        searchAction: function () {
+        searchAction: function() {
             var $category = $('.qor-help__search-category'),
                 $input = $('.qor-help__search'),
                 $list = $('.qor-help__body'),
@@ -115,18 +115,18 @@
                 dataType: 'html',
                 processData: false,
                 contentType: false,
-                beforeSend: function () {
+                beforeSend: function() {
                     $list.hide().after($loading);
                     window.componentHandler.upgradeElement($loading.children()[0]);
                 },
 
-                success: function (html) {
+                success: function(html) {
                     $(".qor-slideout__title").show();
                     $(".qor-slideout__show_title").remove();
                     $list.html($(html).find('.qor-help__body').html()).show();
                     $loading.remove();
                 },
-                error: function (xhr, textStatus, errorThrown) {
+                error: function(xhr, textStatus, errorThrown) {
                     $list.show();
                     $loading.remove();
                     window.alert([textStatus, errorThrown].join(': '));
@@ -134,7 +134,7 @@
             });
         },
 
-        loadDoc: function (e) {
+        loadDoc: function(e) {
             var $element = $(e.target),
                 $index = $(".qor-help__index"),
                 $loading = $(QorHelpDocument.TEMPLATE_LOADING),
@@ -145,6 +145,10 @@
                 $newLink = this.$newLink,
                 $newLinkHref = this.$newLinkHref;
 
+            if (!$('.qor-slideout').is(':visible')) {
+                return;
+            }
+
             $index.hide();
 
             $.ajax(url, {
@@ -152,10 +156,10 @@
                 dataType: 'html',
                 processData: false,
                 contentType: false,
-                beforeSend: function () {
+                beforeSend: function() {
                     $loading.appendTo($help_body).trigger('enable');
                 },
-                success: function (html) {
+                success: function(html) {
                     $(html).find('.qor-page__show').appendTo($help_body).addClass('qor-doc__preview');
 
                     // update slideout title
@@ -171,7 +175,7 @@
 
                     $newLink.attr('href', url);
 
-                    $('.qor-slideout__title .qor-doc__close').click(function () {
+                    $('.qor-slideout__title .qor-doc__close').click(function() {
                         $index.show();
                         $('.qor-slideout__title').show();
                         $('.qor-doc__preview').remove();
@@ -181,7 +185,7 @@
 
                     $loading.remove();
                 },
-                error: function (xhr, textStatus, errorThrown) {
+                error: function(xhr, textStatus, errorThrown) {
                     $loading.remove();
                     window.alert([textStatus, errorThrown].join(': '));
                 }
@@ -190,7 +194,7 @@
             return false;
         },
 
-        destroy: function () {
+        destroy: function() {
             this.unbind();
             this.$element.removeData(NAMESPACE);
         }
@@ -205,8 +209,8 @@
         '</h3>'
     );
 
-    QorHelpDocument.plugin = function (options) {
-        return this.each(function () {
+    QorHelpDocument.plugin = function(options) {
+        return this.each(function() {
             var $this = $(this);
             var data = $this.data(NAMESPACE);
             var fn;
@@ -225,14 +229,14 @@
     };
 
 
-    $(function () {
+    $(function() {
         var selector = '[data-toggle="qor.help"]';
 
         $(document).
-        on(EVENT_DISABLE, function (e) {
+        on(EVENT_DISABLE, function(e) {
             QorHelpDocument.plugin.call($(selector, e.target), 'destroy');
         }).
-        on(EVENT_ENABLE, function (e) {
+        on(EVENT_ENABLE, function(e) {
             QorHelpDocument.plugin.call($(selector, e.target));
         }).
         triggerHandler(EVENT_ENABLE);
