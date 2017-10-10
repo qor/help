@@ -79,56 +79,52 @@ func (qorHelpEntry *QorHelpEntry) ConfigureQorResource(res resource.Resourcer) {
 		Admin := res.GetAdmin()
 		res.UseTheme("help")
 
-		if res.GetMeta("Body") == nil {
-			res.Meta(&admin.Meta{Name: "Body", Type: "rich_editor"})
-		}
+		res.Meta(&admin.Meta{Name: "Body", Type: "rich_editor"})
 
-		if res.GetMeta("Categories") == nil {
-			res.Meta(&admin.Meta{
-				Name: "Categories",
-				Valuer: func(record interface{}, context *qor.Context) interface{} {
-					tx := context.GetDB()
-					if tx.NewRecord(record) {
-						if category := context.Request.URL.Query().Get("category"); category != "" {
-							return []string{category}
-						}
+		res.Meta(&admin.Meta{
+			Name: "Categories",
+			Valuer: func(record interface{}, context *qor.Context) interface{} {
+				tx := context.GetDB()
+				if tx.NewRecord(record) {
+					if category := context.Request.URL.Query().Get("category"); category != "" {
+						return []string{category}
 					}
+				}
 
-					if field, ok := tx.NewScope(record).FieldByName("Categories"); ok {
-						if categories, ok := field.Field.Interface().(Categories); ok {
-							return categories.Categories
-						}
+				if field, ok := tx.NewScope(record).FieldByName("Categories"); ok {
+					if categories, ok := field.Field.Interface().(Categories); ok {
+						return categories.Categories
 					}
-					return []string{}
-				},
-				Config: &admin.SelectManyConfig{Collection: func(record interface{}, context *qor.Context) [][]string {
-					var (
-						results    [][]string
-						resultsMap = map[string][]string{}
-					)
+				}
+				return []string{}
+			},
+			Config: &admin.SelectManyConfig{Collection: func(record interface{}, context *qor.Context) [][]string {
+				var (
+					results    [][]string
+					resultsMap = map[string][]string{}
+				)
 
-					for _, r := range Admin.GetResources() {
-						value := string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))
-						resultsMap[value] = append(resultsMap[value], r.ToParam())
+				for _, r := range Admin.GetResources() {
+					value := string(Admin.T(context, fmt.Sprintf("qor_help.categories.%v", r.ToParam()), r.Name))
+					resultsMap[value] = append(resultsMap[value], r.ToParam())
+				}
+
+				var translations []string
+				for key, _ := range resultsMap {
+					translations = append(translations, key)
+				}
+
+				sort.Strings(translations)
+
+				for _, key := range translations {
+					for _, param := range resultsMap[key] {
+						results = append(results, []string{param, key})
 					}
+				}
 
-					var translations []string
-					for key, _ := range resultsMap {
-						translations = append(translations, key)
-					}
-
-					sort.Strings(translations)
-
-					for _, key := range translations {
-						for _, param := range resultsMap[key] {
-							results = append(results, []string{param, key})
-						}
-					}
-
-					return results
-				}},
-			})
-		}
+				return results
+			}},
+		})
 
 		res.IndexAttrs() // generate search attrs
 		searchHandler := res.SearchHandler
