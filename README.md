@@ -2,9 +2,21 @@
 
 QOR Help provides a way to add help documents to [QOR Admin](http://github.com/qor/admin)
 
-## Documentation
+## Usage
 
-<https://doc.getqor.com/plugins/help.html>
+First, add QOR Help table to the database.
+
+```go
+db.DB.AutoMigrate(&help.QorHelpEntry{})
+```
+
+Then add QOR Help to [QOR Admin](http://github.com/qor/admin).
+
+```go
+Admin.NewResource(&help.QorHelpEntry{})
+```
+
+Now start your application. You should see a question mark icon appears at the top right corner of [QOR Admin](http://github.com/qor/admin) interface, click the icon, a slide panel should appear, the Admin user could get knowledge from here directly.
 
 ## License
 
